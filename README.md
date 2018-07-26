@@ -1,6 +1,6 @@
 # c-cpp-perf-tools
 
-This extensions brings gperftools output inline into the VS Code editor, providing 
+This extension brings `gperftools` output inline into the VS Code editor, providing 
 both a line by line heatmap as well as per-function runtime statistics.
 
 ## Features
