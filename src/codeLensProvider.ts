@@ -3,7 +3,6 @@
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
 import { writeFile, watchFile } from 'fs';
-import { privateEncrypt } from 'crypto';
 
 class ProfilingCodelens extends vscode.CodeLens {
     constructor(public funcName: string, range: vscode.Range) {
