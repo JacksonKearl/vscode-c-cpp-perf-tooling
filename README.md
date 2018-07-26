@@ -8,7 +8,7 @@ both a line by line heatmap as well as per-function runtime statistics.
 Each function is annotated with both the percent and total runtime was spent in that function. Additionally, functions which call other functions also have statistics for
 the total time spent in that function and functions called from that function.
 
-![overview](screenshot.png)
+![overview](Screenshot.png)
 
 
 ## Requirements
