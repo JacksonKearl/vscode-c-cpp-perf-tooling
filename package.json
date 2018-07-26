@@ -2,6 +2,10 @@
     "name": "c-cpp-perf-tools",
     "displayName": "C/C++ Performance Tooling",
     "description": "Inline performance metrics for C and C++",
+    "author": {
+        "name": "Jackson Kearl"
+    },
+    "private": true,
     "version": "0.0.1",
     "icon": "icon.png",
     "publisher": "jacksonkearl",
@@ -11,6 +15,10 @@
     "categories": [
         "Other"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JacksonKearl/vscode-c-cpp-perf-tooling.git"
+    },
     "activationEvents": [
         "onLanguage:c",
         "onLanguage:cpp"
