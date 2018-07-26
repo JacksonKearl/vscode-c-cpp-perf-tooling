@@ -1,65 +1,86 @@
-# c-cpp-perf-tools README
+# c-cpp-perf-tools
 
-This is the README for your extension "c-cpp-perf-tools". After writing up a brief description, we recommend including the following sections.
+This extensions brings gperftools output inline into the VS Code editor, providing 
+both a line by line heatmap as well as per-function runtime statistics.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Each function is annotated with both the percent and total runtime was spent in that function. Additionally, functions which call other functions also have statistics for
+the total time spent in that function and functions called from that function.
 
-For example if there is an image subfolder under your extension project workspace:
+![overview](screenshot.png)
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+This is a bit of a pain to install...
+
+macOS:
+ - `gperftools`: a standard `brew install gperftools` should be fine.
+ - `pprof`: you *must* use the go version, found at https://github.com/google/pprof. The standard installation will not work.
+ - `llvm`: you must augment the standard llvm with an additional `llvm-symbolizer`. Do do this:
+    - `brew install llvm`
+    - `ln -s /usr/local/opt/llvm/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer`
+ - `ctags` this comes by default with macOS, but make sure you have it anyways.
+
+Linux:
+- this should work on linux, but I haven't personally tried.
+
+## Building for Profiling
+
+You must pass the `-lprofiler`, `-g`, and `-fno-pie` flags when compiling, and set the `CPUPROFILE` environment variable to the output location of your `.perf` file when executing. 
+
+An example Makefile:
+```
+thing: thing.c
+	clang -g -fno-pie -lprofiler -o thing thing.c otherthing.c thirdthing.c
+
+thing.perf: thing
+	CPUPROFILE=thing.perf ./thing
+```
+
+You can add this as a VS Code build task with the following `tasks.json` file:
+```
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Profile",
+            "type": "process",
+            "args": [
+                "thing.perf"
+            ],
+            "command": "make",
+            "group": "build",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            }
+        }
+    ]
+}
+```
+
+This will allow you to rebuild and see results live with a simple `cmd+shift+b` from inside Code.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `c-cpp-perf.pprofPath`: set this to the *go version* of `pprof`. The defualt is `$GOPATH/bin/pprof`, which should hopefully work for most cases.  
+* `c-cpp-perf.ctagsPath`: set this to the path to your `ctags` installation. The default is `ctags`, which should be fine so long as `ctags` is on your path.
+* `c-cpp-perf.perfReportPath`: this should probably be configured in your workspace settings, as it may be different from project to project.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Does not redraw heatmap on new editor load.
+
+(among many others...)
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release. This has bugs.

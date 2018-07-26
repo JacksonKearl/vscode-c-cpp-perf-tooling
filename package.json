@@ -11,10 +11,33 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onLanguage:c",
+        "onLanguage:cpp"
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": [
+            {
+                "title": "C/C++ Perf Tooling",
+                "properties": {
+                    "c-cpp-perf.pprofPath": {
+                        "type": "string",
+                        "default": "$GOPATH/bin/pprof",
+                        "description": "The path to the local `pprof` installation. This should be the go version, from `https://github.com/google/pprof`."
+                    },
+                    "c-cpp-perf.ctagsPath": {
+                        "type": "string",
+                        "default": "ctags",
+                        "description": "The path to the local `ctags` installation"
+                    },
+                    "c-cpp-perf.perfReportPath": {
+                        "type": "string",
+                        "default": "${rootPath}/report.perf",
+                        "description": "The path to the `*.perf` output file. ${rootPath} will be expanded to the path of the workspace root"
+                    }
+                }
+            }
+        ],
         "commands": [
             {
                 "command": "extension.sayHello",
