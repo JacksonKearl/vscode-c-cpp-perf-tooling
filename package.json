@@ -1,8 +1,9 @@
 {
     "name": "c-cpp-perf-tools",
-    "displayName": "C/C++ Perfomance Tooling",
-    "description": "Inline performnace metrics for C and C++",
+    "displayName": "C/C++ Performance Tooling",
+    "description": "Inline performance metrics for C and C++",
     "version": "0.0.1",
+    "icon": "icon.png",
     "publisher": "jacksonkearl",
     "engines": {
         "vscode": "^1.25.0"
